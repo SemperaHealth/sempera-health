@@ -8,7 +8,8 @@ export function Hero() {
       <div className="absolute inset-0 -z-10">
         <HeroMedia image={hero.image} alt={hero.imageAlt} video={hero.video} />
         {/* Gradients keep the headline readable over the photo/video. */}
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/90 via-navy-deep/55 to-navy-deep/0" />
+        {/* From 1280px the tint stays behind the text and clears before the subject, so her side stays crisp. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/90 via-navy-deep/55 to-navy-deep/0 xl:via-navy-deep/60 xl:via-35% xl:to-60%" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-navy-deep/10 to-transparent md:hidden" />
       </div>
 

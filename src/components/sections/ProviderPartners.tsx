@@ -28,15 +28,16 @@ export function ProviderPartners() {
           </ButtonLink>
         </div>
 
-        {/* Illustrative photo — not presented as a specific Sempera clinician. */}
+        {/* Illustrative photo — not presented as a specific Sempera clinician.
+            Hidden below 1024px: stacked, it would sit right above the same photo in the Affiliates section. */}
         <Image
           src="/images/clinician.webp"
           alt="Clinician with a tablet talking with a patient in an exam room"
           width={1254}
           height={1254}
-          sizes="(min-width: 1024px) 600px, 100vw"
+          sizes="(min-width: 1024px) 600px, 1px"
           quality={90}
-          className="aspect-[828/746] h-auto w-full rounded-2xl object-cover"
+          className="hidden aspect-[828/746] h-auto w-full rounded-2xl object-cover lg:block"
         />
       </Container>
     </section>

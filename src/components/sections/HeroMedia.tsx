@@ -27,7 +27,8 @@ export function HeroMedia({ image, alt, video }: { image: string; alt: string; v
         fill
         preload
         sizes="100vw"
-        quality={90}
+        // Served as-is (already a tuned 2000px WebP) so it isn't compressed a second time.
+        unoptimized
         className="object-cover object-[72%_center]"
       />
       {video && allowVideo && (

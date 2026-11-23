@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+/*
+ * Sempera design tokens.
+ * Text colors were contrast-checked against their backgrounds (WCAG 2.2 AA):
+ *   teal-600 on white  4.77:1   (eyebrows, links, button fill with white text)
+ *   slate on white     5.89:1   (body copy)
+ *   navy on white      13.0:1   (headings)
+ *   aqua on navy-deep  8.0:1    (eyebrows on dark sections)
+ * `teal` (#20A39E) is decorative only — icons, rings, lines — never small text.
+ */
+@theme {
+  --color-navy: #143159;
+  --color-navy-deep: #0b1f45;
+  --color-navy-line: #1c5f7a;
+  --color-teal: #20a39e;
+  --color-teal-600: #14807b;
+  --color-teal-700: #0f6b67;
+  --color-aqua: #3fc9c2;
+  --color-cream: #f7f3ec;
+  --color-teal-wash: #e8f1f0; /* Knowledge Hub background (from design) */
+  --color-paper: #f9f9f7; /* Advanced Wellness background (from design) */
+  --color-mist: #c9d3e3;
+  --color-ink: #1f2937;
+  --color-slate: #5b6576;
+
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+
+  --ease-out-crisp: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Extra breakpoint between xl (1280) and 2xl (1536); used where a design needs fixed sizes. */
+  --breakpoint-wide: 1400px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* keep anchored headings clear of the sticky header */
+  }
+
+  body {
+    @apply bg-white font-sans text-slate antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-serif text-navy;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-teal-600);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-aqua);
+  }
+
+  /* ---------- Scroll reveal (see components/RevealScope.tsx) ---------- */
+
+  /* Simple reveal: the whole element fades, rises and sharpens (e.g. buttons). */
+  [data-reveal]:not([data-reveal="step"]) {
+    --reveal-y: 30px;
+    --reveal-blur: 5px;
+    transition:
+      opacity 600ms var(--ease-out-crisp),
+      filter 600ms var(--ease-out-crisp),
+      transform 600ms var(--ease-out-crisp);
+  }
+
+  /* Hidden only once JS has flagged <html>, so no-JS visitors see everything. */
+  .js [data-reveal]:not([data-reveal="step"]):not([data-revealed]) {
+    opacity: 0;
+    filter: blur(var(--reveal-blur));
+    transform: translate3d(0, var(--reveal-y), 0);
+  }
+
+  .js [data-reveal][data-reveal-from="above"]:not([data-reveal="step"]):not([data-revealed]) {
+    transform: translate3d(0, calc(var(--reveal-y) * -1), 0);
+  }
+
+  /*
+   * Step reveal: the step itself never moves; its parts animate in a quick
+   * cascade — marker pops, text rises into focus, then the image lifts in.
+   * Blur is limited to the small text block so photos are never smeared.
+   */
+  [data-reveal-part] {
+    --dir: 1; /* 1 = enter from below, -1 = from above (scrolling up) */
+    transition:
+      opacity 650ms var(--ease-out-crisp) var(--delay, 0ms),
+      filter 650ms var(--ease-out-crisp) var(--delay, 0ms),
+      transform 650ms var(--ease-out-crisp) var(--delay, 0ms);
+  }
+
+  [data-reveal-part="marker"] {
+    --delay: 0ms;
+    transform-origin: 34% 50%; /* centre of the ring, not the arrow tip */
+  }
+  [data-reveal-part="text"] {
+    --delay: 90ms;
+  }
+  [data-reveal-part="media"] {
+    --delay: 170ms;
+  }
+
+  [data-reveal-from="above"] [data-reveal-part] {
+    --dir: -1;
+  }
+
+  .js [data-reveal="step"]:not([data-revealed]) [data-reveal-part="marker"] {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  .js [data-reveal="step"]:not([data-revealed]) [data-reveal-part="text"] {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translate3d(0, calc(24px * var(--dir)), 0);
+  }
+  .js [data-reveal="step"]:not([data-revealed]) [data-reveal-part="media"] {
+    opacity: 0;
+    transform: translate3d(0, calc(40px * var(--dir)), 0) scale(0.97);
+  }
+
+  /* Timeline segment is uncovered (not stretched) so the dashes stay intact. */
+  [data-reveal-line] {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 900ms var(--ease-out-crisp) 120ms;
+  }
+  .js [data-reveal]:not([data-revealed]) [data-reveal-line] {
+    clip-path: inset(0 0 100% 0);
+  }
+  .js [data-reveal][data-reveal-from="above"]:not([data-revealed]) [data-reveal-line] {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js [data-reveal]:not([data-revealed]),
+    .js [data-reveal]:not([data-revealed]) [data-reveal-part] {
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
+    }
+    .js [data-reveal]:not([data-revealed]) [data-reveal-line] {
+      clip-path: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

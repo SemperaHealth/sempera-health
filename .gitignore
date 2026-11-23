@@ -1,0 +1,25 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# env files — never commit secrets (API keys, webhook secrets)
+.env
+.env*.local
+.env.development
+.env.production
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+pnpm-debug.log*
+.vercel
+/coverage
+/playwright-report
+/test-results

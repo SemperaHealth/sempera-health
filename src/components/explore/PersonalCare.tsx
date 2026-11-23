@@ -5,13 +5,14 @@ export function PersonalCare() {
   return (
     <section aria-labelledby="personal-care-title" className="relative overflow-hidden bg-white">
       {/* Photo bleeds off the left edge on desktop; a soft curve forms its right side.
+          Hidden below 1024px: stacked, it would sit right under the hero photo with no gap.
           TODO: swap for the full-resolution photo (currently cropped from the design file). */}
-      <div className="relative aspect-[16/10] w-full lg:absolute lg:inset-y-0 lg:left-0 lg:aspect-auto lg:w-[46%]">
+      <div className="relative hidden lg:absolute lg:inset-y-0 lg:left-0 lg:block lg:w-[46%]">
         <Image
           src="/images/explore/telehealth-call.webp"
           alt="Smiling woman with a mug on a video call with a clinician on her laptop"
           fill
-          sizes="(min-width: 1024px) 46vw, 100vw"
+          sizes="(min-width: 1024px) 46vw, 1px"
           quality={90}
           className="object-cover object-[70%_center]"
         />
